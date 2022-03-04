@@ -107,6 +107,7 @@ namespace Presentacion
             this.txtPass.Name = "txtPass";
             this.txtPass.Size = new System.Drawing.Size(327, 21);
             this.txtPass.TabIndex = 6;
+            this.txtPass.UseSystemPasswordChar = true;
             // 
             // label2
             // 

@@ -23,10 +23,8 @@ namespace Presentacion
 
         private void btnEntrar_Click(object sender, EventArgs e)
         {
-            var textUser = txtUsuario.Text.ToLower();
-
             var usuarios = dao.GetAll();
-            var usuario = usuarios.Select(x => x).Where(x => x.Username == textUser && x.Pass == txtPass.Text).FirstOrDefault();
+            var usuario = usuarios.Select(x => x).Where(x => x.Username == txtUsuario.Text.Trim() && x.Pass == txtPass.Text.Trim()).FirstOrDefault();
             if (usuario != null)
             {
                 FrmMain frm = new FrmMain();
