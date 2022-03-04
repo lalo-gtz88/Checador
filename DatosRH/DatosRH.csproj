@@ -44,10 +44,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAO\ChecadasDAO.cs" />
+    <Compile Include="DAO\UsuarioDao.cs" />
     <Compile Include="DB.cs" />
     <Compile Include="DAO\PersonalDAO.cs" />
     <Compile Include="DTO\Checada.cs" />
     <Compile Include="DTO\Personal.cs" />
+    <Compile Include="DTO\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\Checadas_VM.cs" />
   </ItemGroup>

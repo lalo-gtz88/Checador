@@ -12,9 +12,10 @@ namespace DatosRH.DAO
         public List<Personal> GetAll()
         {
             query = "SELECT * FROM personal ORDER BY num;";
+
             List<Personal> list = new List<Personal>();
 
-            using (var cnn = ConexionLocal())
+            using (var cnn = ConexionRemoto())
             {
                 cnn.Open();
                 using (var cmd = new MySqlCommand(query, cnn))
@@ -46,7 +47,7 @@ namespace DatosRH.DAO
                                 //TurnoOpcional = (DBNull.Value.Equals(rd["turnoOpcional"])) ? "" : rd.GetString(17),
                                 //DenomPuesto = (DBNull.Value.Equals(rd["denomPuesto"])) ? 0 : rd.GetInt32(18),
                                 Huella = (DBNull.Value.Equals(rd["huella"])) ? (byte[])(null) : (byte[])(rd["huella"]),
-                                //Status = (DBNull.Value.Equals(rd["status"])) ? "" : rd.GetString(20),
+                                Status = rd["huella"].ToString()
                                 //Pass = (DBNull.Value.Equals(rd["pass"])) ? "" : rd.GetString(21),
                                 //Servicio = (DBNull.Value.Equals(rd["servicio"])) ? "" : rd.GetString(22),
                                 //Cedula = (DBNull.Value.Equals(rd["cedula"])) ? "" : rd.GetString(23)
@@ -100,7 +101,39 @@ namespace DatosRH.DAO
                     result = Convert.ToInt32(cmd.ExecuteScalar());
                     cmd.Parameters.Clear();
                     cmd.Connection.Close();
+                }
+            }
 
+            using (var cnn = ConexionRemoto())
+            {
+                cnn.Open();
+                using (var cmd = new MySqlCommand(query, cnn))
+                {
+                    cmd.Parameters.AddWithValue("?num", persona.Num);
+                    cmd.Parameters.AddWithValue("?nombre", persona.Nombre);
+                    cmd.Parameters.AddWithValue("?apellidos", persona.Apellidos);
+                    cmd.Parameters.AddWithValue("?telefono", persona.Telefono);
+                    cmd.Parameters.AddWithValue("?email", persona.Email);
+                    cmd.Parameters.AddWithValue("?area", persona.Area);
+                    cmd.Parameters.AddWithValue("?calle", persona.Calle);
+                    cmd.Parameters.AddWithValue("?numero", persona.Numero);
+                    cmd.Parameters.AddWithValue("?numInt", persona.NumInt);
+                    cmd.Parameters.AddWithValue("?fracc", persona.Fracc);
+                    cmd.Parameters.AddWithValue("?cp", persona.CP);
+                    cmd.Parameters.AddWithValue("?rfc", persona.RFC);
+                    cmd.Parameters.AddWithValue("?curp", persona.CURP);
+                    cmd.Parameters.AddWithValue("?fechaIng", persona.FechaIng);
+                    cmd.Parameters.AddWithValue("?puesto", persona.Puesto);
+                    cmd.Parameters.AddWithValue("?turno", persona.Turno);
+                    cmd.Parameters.AddWithValue("?contrato", persona.Contrato);
+                    cmd.Parameters.AddWithValue("?turnoOpcional", persona.TurnoOpcional);
+                    cmd.Parameters.AddWithValue("?denomPuesto", persona.DenomPuesto);
+                    cmd.Parameters.AddWithValue("?huella", persona.Huella);
+                    cmd.Parameters.AddWithValue("?servicio", persona.Servicio);
+                    cmd.Parameters.AddWithValue("?cedula", persona.Cedula);
+                    result = Convert.ToInt32(cmd.ExecuteScalar());
+                    cmd.Parameters.Clear();
+                    cmd.Connection.Close();
                 }
             }
             
@@ -113,6 +146,40 @@ namespace DatosRH.DAO
                     "WHERE id = ?";
                     
             using (var cnn = ConexionLocal())
+            {
+                cnn.Open();
+                using (var cmd = new MySqlCommand(query, cnn))
+                {
+                    cmd.Parameters.AddWithValue("?num", persona.Num);
+                    cmd.Parameters.AddWithValue("?nombre", persona.Nombre);
+                    cmd.Parameters.AddWithValue("?apellidos", persona.Apellidos);
+                    cmd.Parameters.AddWithValue("?telefono", persona.Telefono);
+                    cmd.Parameters.AddWithValue("?email", persona.Email);
+                    cmd.Parameters.AddWithValue("?area", persona.Area);
+                    cmd.Parameters.AddWithValue("?calle", persona.Calle);
+                    cmd.Parameters.AddWithValue("?numero", persona.Numero);
+                    cmd.Parameters.AddWithValue("?numInt", persona.NumInt);
+                    cmd.Parameters.AddWithValue("?fracc", persona.Fracc);
+                    cmd.Parameters.AddWithValue("?cp", persona.CP);
+                    cmd.Parameters.AddWithValue("?rfc", persona.RFC);
+                    cmd.Parameters.AddWithValue("?curp", persona.CURP);
+                    cmd.Parameters.AddWithValue("?fechaIng", persona.FechaIng);
+                    cmd.Parameters.AddWithValue("?puesto", persona.Puesto);
+                    cmd.Parameters.AddWithValue("?turno", persona.Turno);
+                    cmd.Parameters.AddWithValue("?contrato", persona.Contrato);
+                    cmd.Parameters.AddWithValue("?turnoOpcional", persona.TurnoOpcional);
+                    cmd.Parameters.AddWithValue("?denomPuesto", persona.DenomPuesto);
+                    cmd.Parameters.AddWithValue("?huella", persona.Huella);
+                    cmd.Parameters.AddWithValue("?servicio", persona.Servicio);
+                    cmd.Parameters.AddWithValue("?cedula", persona.Cedula);
+                    cmd.Parameters.AddWithValue("?id", persona.Id);
+                    result = Convert.ToInt32(cmd.ExecuteScalar());
+                    cmd.Parameters.Clear();
+                    cmd.Connection.Close();
+                }
+            }
+
+            using (var cnn = ConexionRemoto())
             {
                 cnn.Open();
                 using (var cmd = new MySqlCommand(query, cnn))
@@ -161,6 +228,42 @@ namespace DatosRH.DAO
                     result = cmd.ExecuteNonQuery();
                     cmd.Parameters.Clear();
                     cnn.Close();
+                }
+            }
+            
+            return result;
+        }
+
+
+        public int UpdateHuella(Personal persona)
+        {
+            int result = 0;
+            query = "UPDATE personal SET huella=? WHERE id = ?";
+            
+            //Guardar en equipo local
+            using (var cnn = ConexionLocal())
+            {
+                cnn.Open();
+                using (var cmd = new MySqlCommand(query, cnn))
+                {
+                    cmd.Parameters.AddWithValue("?huella", persona.Huella);
+                    cmd.Parameters.AddWithValue("?id", persona.Id);
+                    result = cmd.ExecuteNonQuery();
+                    cmd.Parameters.Clear();
+                    cmd.Connection.Close();
+                }
+            }
+            //Guardar información en base de datos del servidor
+            using (var cnn = ConexionRemoto())
+            {
+                cnn.Open();
+                using (var cmd = new MySqlCommand(query, cnn))
+                {
+                    cmd.Parameters.AddWithValue("?huella", persona.Huella);
+                    cmd.Parameters.AddWithValue("?id", persona.Id);
+                    result = cmd.ExecuteNonQuery();
+                    cmd.Parameters.Clear();
+                    cmd.Connection.Close();
                 }
             }
             

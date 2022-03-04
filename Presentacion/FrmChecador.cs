@@ -232,5 +232,12 @@ namespace Presentacion
             lblMsg.Visible = false;
             lblDatos.Visible = false;
         }
+
+        private void lblBack_Click(object sender, EventArgs e)
+        {
+            FrmMain main = new FrmMain();
+            main.Show();
+            this.Close();
+        }
     }
 }

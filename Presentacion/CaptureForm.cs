@@ -91,37 +91,37 @@ namespace Presentacion
 
 		public void OnComplete(object Capture, string ReaderSerialNumber, DPFP.Sample Sample)
 		{
-			MakeReport("The fingerprint sample was captured.");
-			SetPrompt("Scan the same fingerprint again.");
+			MakeReport("La muestra de la huella fué capturada.");
+			SetPrompt("Escanea la misma huella otra vez.");
 			Process(Sample);
 		}
 
 		public void OnFingerGone(object Capture, string ReaderSerialNumber)
 		{
-			MakeReport("The finger was removed from the fingerprint reader.");
+			MakeReport("El dedo fue removido del lector.");
 		}
 
 		public void OnFingerTouch(object Capture, string ReaderSerialNumber)
 		{
-			MakeReport("The fingerprint reader was touched.");
+			MakeReport("El lector ha sido tocado.");
 		}
 
 		public void OnReaderConnect(object Capture, string ReaderSerialNumber)
 		{
-			MakeReport("The fingerprint reader was connected.");
+			MakeReport("El sensor esta conectado.");
 		}
 
 		public void OnReaderDisconnect(object Capture, string ReaderSerialNumber)
 		{
-			MakeReport("The fingerprint reader was disconnected.");
+			MakeReport("El sensor esta desconectado.");
 		}
 
 		public void OnSampleQuality(object Capture, string ReaderSerialNumber, DPFP.Capture.CaptureFeedback CaptureFeedback)
 		{
 			if (CaptureFeedback == DPFP.Capture.CaptureFeedback.Good)
-				MakeReport("The quality of the fingerprint sample is good.");
+				MakeReport("La calidad de la muestra de la huella es buena.");
 			else
-				MakeReport("The quality of the fingerprint sample is poor.");
+				MakeReport("La calidad de la huella no es buena.");
 		}
 		#endregion
 
